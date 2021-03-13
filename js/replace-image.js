@@ -6,7 +6,7 @@ const closeModal = document.querySelector('#upload-cancel');
 const imageContainer = document.querySelector('.img-upload__preview');
 const innerImage = imageContainer.querySelector('img');
 // const dropZone = document.querySelector('.img-upload__control');
-
+const FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif'];
 // отменяю стандартные события браузера для апло
 document.addEventListener('dragover', (evt) => evt.preventDefault());
 document.addEventListener('drop', (evt) => evt.preventDefault());
@@ -15,15 +15,21 @@ document.addEventListener('drop', (evt) => evt.preventDefault());
 
 function replaceImage() {
   let file = upload.files[0];
-  const reader = new FileReader();
-  reader.onloadend = function () {
-    innerImage.src = reader.result;
-  };
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => {
+    return fileName.endsWith(it);
+  });
+  if (matches) {
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      innerImage.src = reader.result;
+    };
 
-  if (file) {
-    reader.readAsDataURL(file);
-  } else {
-    innerImage.src = '';
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      innerImage.src = '';
+    }
   }
 }
 

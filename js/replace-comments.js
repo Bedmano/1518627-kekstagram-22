@@ -1,28 +1,22 @@
-import { commentsArray } from './render-pictures.js';
 const commentsList = document.querySelector('.social__comments');
-const comment = commentsList.querySelector('li');
 
-const getCommentsLengthArray = function () {
-  const pictureComments = document.querySelectorAll('.picture__comments');
-  return Array.prototype.map.call(pictureComments, function (evt) {
-    return evt.textContent;
-  });
-};
+import { createNewElement } from './util.js';
 
-const replaceComments = function (index) {
-  const currentComments = commentsArray[index];
+const replaceComments = function (commentsLength, comments) {
   const fragment = document.createDocumentFragment();
-
-  currentComments.forEach(({ avatar, name, message }) => {
-    const newComment = comment.cloneNode(true);
-
-    newComment.querySelector('.social__picture').src = avatar;
-    newComment.querySelector('.social__picture').alt = name;
-    newComment.querySelector('.social__text').textContent = message;
-    fragment.appendChild(newComment);
-  });
-
-  return fragment;
+  for(let j = 0; j < commentsLength; j++){
+    const newListItem = createNewElement('li', 'social__comment');
+    const userAvatar = createNewElement('img', 'social__picture');
+    const { avatar, name, message } = comments[j];
+    userAvatar.src = avatar;
+    userAvatar.alt = name;
+    newListItem.appendChild(userAvatar);
+    const commentText = createNewElement('p', 'social__text')
+    commentText.textContent = message;
+    newListItem.appendChild(commentText);
+    fragment.appendChild(newListItem);
+  }
+  commentsList.appendChild(fragment);
 };
-getCommentsLengthArray();
+
 export { replaceComments };

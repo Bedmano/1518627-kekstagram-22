@@ -1,11 +1,13 @@
-import { getCommentLength } from './util.js';
-import { onEscButton } from './replace-image.js';
+import { onEscButtonOverlay } from './util.js';
+
 const hashtagInput = document.querySelector('.text__hashtags');
-const hashtagTemplate = new RegExp(/^(#)([a-zA-Zа-яА-Я0-9]{1,19})$/);
 const commentTextArea = document.querySelector('.text__description');
-const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_LENGTH = 20;
 const MAX_HASHTAG_NUMBER = 5;
+
+const isValidHastag = (input) => {
+  return /^\w+$/.test(input) && !(~input.indexOf('_'));
+}
 // проверка оригинальности хэштега
 const checkOriginality = function (hashtags) {
   const originalHashtag = [];
@@ -20,12 +22,13 @@ const checkOriginality = function (hashtags) {
   });
   return originality;
 };
+
 // проверка хэштега на соответсвие валдиности
 const validateHashtag = function (input) {
   let error = '';
   if (input.slice(0, 1) !== '#') {
     error = 'Хэштег должен начинаться с решётки';
-  } else if (hashtagTemplate.test(input) == false) {
+  } else if (!isValidHastag(input.slice(1))) {
     error = 'Хэштэг не должен содержать спецсимволы';
   } else if (input.length > HASHTAG_LENGTH) {
     error =
@@ -33,6 +36,7 @@ const validateHashtag = function (input) {
   }
   return error;
 };
+
 // проверка хэштегов на повторение и количество
 const checkHashtagInput = function (input) {
   let error = '';
@@ -49,43 +53,28 @@ const checkHashtagInput = function (input) {
     if (error) {
       erorrsArray.push(error);
     }
-
   });
   error = erorrsArray.join(', ');
-  if(error){
-    hashtagInput.style.borderColor = 'red';
-  }
   return error;
 };
+
 // функции для проверки фокуса в поле хештега
 hashtagInput.onfocus = function () {
-  window.removeEventListener('keydown', onEscButton);
+  window.removeEventListener('keydown', onEscButtonOverlay);
 };
 hashtagInput.onblur = function () {
-  window.addEventListener('keydown', onEscButton);
+  window.addEventListener('keydown', onEscButtonOverlay);
 };
+
 // функция валидации поля хэштега с применением функций описанных выше
 hashtagInput.addEventListener('input', function () {
   hashtagInput.setCustomValidity(checkHashtagInput(hashtagInput.value));
 });
+
 // функции для проверки фокуса в поле комментария
 commentTextArea.onfocus = function () {
-  window.removeEventListener('keydown', onEscButton);
+  window.removeEventListener('keydown', onEscButtonOverlay);
 };
 commentTextArea.onblur = function () {
-  window.addEventListener('keydown', onEscButton);
+  window.addEventListener('keydown', onEscButtonOverlay);
 };
-// функция проверки длины комментария
-commentTextArea.addEventListener('input', function () {
-  const commentLength = commentTextArea.value.length;
-  if (getCommentLength(commentLength, MAX_COMMENT_LENGTH) === false) {
-    commentTextArea.setCustomValidity(
-      'Длина комментария не должна превышать 140 символов');
-  } else {
-    commentTextArea.setCustomValidity('')
-  }
-})
-
-
-
-

@@ -1,35 +1,48 @@
 import { closeOnEscOverlayPicture, closeOverlayPicture } from './util.js';
 import { replaceComments } from './replace-comments.js';
-import { descriptionArray } from './render-pictures.js';
 const fullImageOverlay = document.querySelector('.big-picture');
-const fullImage = document.querySelector('.big-picture__img > img');
+const fullImage = document.querySelector('.big-picture__img').querySelector('img');
 const closeModal = document.querySelector('.big-picture__cancel');
-const likes = document.querySelector('.likes-count');
-const comments = document.querySelector('.comments-count');
+const likesCount = document.querySelector('.likes-count');
+const commentsCount = document.querySelector('.comments-count');
 const commentsList = document.querySelector('.social__comments');
-const description = document.querySelector('.social__caption');
+const imageDescription = document.querySelector('.social__caption');
 const body = document.querySelector('body');
-const commentsCount = document.querySelector('.social__comment-count');
-const commentsloader = document.querySelector('.comments-loader');
+const loadButton = document.querySelector('.comments-loader');
+const COMMENTS_LIMIT = 5;
 
-const showFullImage = function () {
-  const images = document.querySelectorAll('.picture .picture__img');
+const showFullImage = function (data) {
+
   const pictures = document.querySelectorAll('.picture');
-  const pictureLikes = document.querySelectorAll('.picture .picture__likes');
-  const pictureComments = document.querySelectorAll('.picture .picture__comments');
+
   for (let i = 0; i < pictures.length; i++) {
-    images[i].addEventListener('click', function () {
+    pictures[i].addEventListener('click', function () {
       fullImageOverlay.classList.remove('hidden');
       body.classList.add('modal-open');
-      fullImage.src = images[i].src;
-      likes.innerHTML = pictureLikes[i].innerHTML;
-      comments.innerHTML = pictureComments[i].innerHTML;
-      description.textContent = descriptionArray[i];
-      const currentComments = replaceComments(i);
       commentsList.innerHTML = '';
-      commentsCount.classList.add('hidden');
-      commentsloader.classList.add('hidden');
-      commentsList.appendChild(currentComments);
+
+      const { url, likes, comments, description} = data[i];
+      fullImage.src = url;
+      likesCount.textContent = likes;
+      commentsCount.textContent = comments.length;
+
+      imageDescription.textContent = description;
+      let counter = 1;
+      loadButton.addEventListener('click', function(evt){
+        evt.preventDefault();
+        commentsList.innerHTML = '';
+        replaceComments(comments.length, comments);
+        loadButton.classList.add('hidden');
+        counter++;
+      })
+
+      if(comments.length > COMMENTS_LIMIT){
+        loadButton.classList.remove('hidden');
+        replaceComments(COMMENTS_LIMIT*counter, comments);
+      } else if(comments.length <= COMMENTS_LIMIT){
+        loadButton.classList.add('hidden');
+        replaceComments(comments.length, comments);
+      }
     });
   }
 };

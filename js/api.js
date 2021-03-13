@@ -1,7 +1,9 @@
+// /* global _:readonly */
 import { renderPictures } from './render-pictures.js';
-import { showFullImage } from './show-full-image.js';
 import { showAlert, args } from './util.js';
+import { sortImages } from './sort-images.js';
 const formSubmit = document.querySelector('.img-upload__form');
+// const SET_DELAY = 500;
 
 const getData = function (onFailure) {
   fetch('https://22.javascript.pages.academy/kekstagram/data')
@@ -11,8 +13,8 @@ const getData = function (onFailure) {
           .json()
           .then((picturesArray) => {
             renderPictures(picturesArray);
+            sortImages(picturesArray);
           })
-          .then(showFullImage);
       } else {
         onFailure(
           'Не удалось получить данные от сервера. Попробуйте перезагрузить страницу или зайти позже.'        );
