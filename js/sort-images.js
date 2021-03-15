@@ -39,7 +39,7 @@ const sortByComments = function (pictures) {
 
 const sortImages = function (pictures) {
   sort.classList.remove('img-filters--inactive');
-  sortForm.addEventListener('click', function (evt) {
+  sortForm.addEventListener('click', _.debounce ((evt) => {
     if (!evt.target.classList.contains('img-filters__button--active')) {
       const activeButton = document.querySelector('.img-filters__button--active');
       if (activeButton) {
@@ -54,6 +54,6 @@ const sortImages = function (pictures) {
     } else if (popularSetting.classList.contains('img-filters__button--active')) {
       renderPictures(sortByComments(pictures));
     }
-  });
+  }, SET_DELAY))
 };
 export { sortImages };

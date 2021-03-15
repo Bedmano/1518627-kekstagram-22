@@ -7,12 +7,12 @@ const likesCount = document.querySelector('.likes-count');
 const commentsCount = document.querySelector('.comments-count');
 const commentsList = document.querySelector('.social__comments');
 const imageDescription = document.querySelector('.social__caption');
+const socialCounter = document.querySelector('.social__comment-count');
 const body = document.querySelector('body');
 const loadButton = document.querySelector('.comments-loader');
 const COMMENTS_LIMIT = 5;
 
 const showFullImage = function (data) {
-
   const pictures = document.querySelectorAll('.picture');
 
   for (let i = 0; i < pictures.length; i++) {
@@ -21,27 +21,42 @@ const showFullImage = function (data) {
       body.classList.add('modal-open');
       commentsList.innerHTML = '';
 
-      const { url, likes, comments, description} = data[i];
+      const { url, likes, comments, description } = data[i];
       fullImage.src = url;
       likesCount.textContent = likes;
       commentsCount.textContent = comments.length;
-
       imageDescription.textContent = description;
       let counter = 1;
-      loadButton.addEventListener('click', function(evt){
-        evt.preventDefault();
-        commentsList.innerHTML = '';
-        replaceComments(comments.length, comments);
-        loadButton.classList.add('hidden');
-        counter++;
-      })
+      let currentComments = 5;
 
-      if(comments.length > COMMENTS_LIMIT){
-        loadButton.classList.remove('hidden');
-        replaceComments(COMMENTS_LIMIT*counter, comments);
-      } else if(comments.length <= COMMENTS_LIMIT){
+      loadButton.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        counter++;
+        commentsList.innerHTML = '';
+        currentComments = COMMENTS_LIMIT * counter;
+        replaceComments(comments.slice(0, currentComments).length, comments);
+        socialCounter.textContent = currentComments + ' из ' + comments.length + ' комментариев';
+
+        if (comments.length < currentComments) {
+          loadButton.classList.add('hidden');
+          counter = 1;
+          currentComments = 5;
+        } else if(currentComments >= comments.length  ){
+          loadButton.classList.add('hidden');
+          counter = 1;
+          currentComments = 5;
+          socialCounter.textContent = comments.length  + ' из ' + comments.length + ' комментариев';
+        }
+      });
+
+      if (comments.length <= COMMENTS_LIMIT) {
         loadButton.classList.add('hidden');
         replaceComments(comments.length, comments);
+        socialCounter.textContent = comments.length  + ' из ' + comments.length + ' комментариев';
+      } else if (comments.length > COMMENTS_LIMIT) {
+        loadButton.classList.remove('hidden');
+        replaceComments(COMMENTS_LIMIT, comments);
+        socialCounter.textContent = currentComments + ' из ' + comments.length + ' комментариев';
       }
     });
   }

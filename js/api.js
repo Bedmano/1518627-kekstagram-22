@@ -1,9 +1,7 @@
-// /* global _:readonly */
 import { renderPictures } from './render-pictures.js';
 import { showAlert, args } from './util.js';
 import { sortImages } from './sort-images.js';
 const formSubmit = document.querySelector('.img-upload__form');
-// const SET_DELAY = 500;
 
 const getData = function (onFailure) {
   fetch('https://22.javascript.pages.academy/kekstagram/data')
