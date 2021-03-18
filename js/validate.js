@@ -8,7 +8,7 @@ const MAX_HASHTAG_NUMBER = 5;
 const isValidHastag = (input) => {
   return /^\w+$/.test(input) && !(~input.indexOf('_'));
 }
-// проверка оригинальности хэштега
+
 const checkOriginality = function (hashtags) {
   const originalHashtag = [];
   let originality = true;
@@ -23,7 +23,6 @@ const checkOriginality = function (hashtags) {
   return originality;
 };
 
-// проверка хэштега на соответсвие валдиности
 const validateHashtag = function (input) {
   let error = '';
   if (input.slice(0, 1) !== '#') {
@@ -37,7 +36,6 @@ const validateHashtag = function (input) {
   return error;
 };
 
-// проверка хэштегов на повторение и количество
 const checkHashtagInput = function (input) {
   let error = '';
   const erorrsArray = [];
@@ -58,7 +56,6 @@ const checkHashtagInput = function (input) {
   return error;
 };
 
-// функции для проверки фокуса в поле хештега
 hashtagInput.onfocus = function () {
   window.removeEventListener('keydown', onEscButtonOverlay);
 };
@@ -66,12 +63,10 @@ hashtagInput.onblur = function () {
   window.addEventListener('keydown', onEscButtonOverlay);
 };
 
-// функция валидации поля хэштега с применением функций описанных выше
 hashtagInput.addEventListener('input', function () {
   hashtagInput.setCustomValidity(checkHashtagInput(hashtagInput.value));
 });
 
-// функции для проверки фокуса в поле комментария
 commentTextArea.onfocus = function () {
   window.removeEventListener('keydown', onEscButtonOverlay);
 };

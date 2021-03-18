@@ -19,7 +19,6 @@ const renderPictures = function (picturesArray) {
     photoElement.querySelector('.picture__comments').textContent =
       comments.length;
     photoElement.querySelector('.picture__likes').textContent = likes;
-
     fragment.appendChild(photoElement);
   });
 

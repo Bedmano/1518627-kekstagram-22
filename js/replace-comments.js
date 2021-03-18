@@ -2,12 +2,12 @@ const commentsList = document.querySelector('.social__comments');
 
 import { createNewElement } from './util.js';
 
-const replaceComments = function (commentsLength, comments) {
+const replaceComments = function (currentComments, comments) {
   const fragment = document.createDocumentFragment();
-  for(let j = 0; j < commentsLength; j++){
+  comments.slice(0, currentComments).forEach(comment => {
     const newListItem = createNewElement('li', 'social__comment');
     const userAvatar = createNewElement('img', 'social__picture');
-    const { avatar, name, message } = comments[j];
+    const { avatar, name, message } = comment;
     userAvatar.src = avatar;
     userAvatar.alt = name;
     newListItem.appendChild(userAvatar);
@@ -15,7 +15,7 @@ const replaceComments = function (commentsLength, comments) {
     commentText.textContent = message;
     newListItem.appendChild(commentText);
     fragment.appendChild(newListItem);
-  }
+  });
   commentsList.appendChild(fragment);
 };
 

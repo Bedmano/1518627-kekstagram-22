@@ -10,6 +10,8 @@ const hashtagInput = document.querySelector('.text__hashtags');
 const imageScale = document.querySelector('.scale__control--value');
 const imageContainer = document.querySelector('.img-upload__preview');
 const innerImage = imageContainer.querySelector('img');
+const lessSizeButton = document.querySelector('.scale__control--smaller');
+const moreSizeButton = document.querySelector('.scale__control--bigger');
 
 const ALERT_TIMER = 5000;
 
@@ -20,7 +22,6 @@ const args = {
   errorClass: '.error',
 };
 
-// Функция для получения случайного числа взята с сайта https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 const getRandom = function (min, max) {
   if (min > max) {
     let swap = min;
@@ -33,17 +34,16 @@ const getRandom = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-// функция для проверки нажатия кнопки ESC
 const isEscButton = function (evt) {
   return evt.key === ('Escape' || 'Esc');
 };
-// функция для создания элемента и присвоения ему класса;
+
 const createNewElement = function(tag, elementClass){
   const newElement = document.createElement(tag);
   newElement.classList.add(elementClass);
   return newElement
 }
-// функция для создания слайдера
+
 const createSlider = function () {
   noUiSlider.create(sliderElement, {
     range: {
@@ -58,7 +58,6 @@ const createSlider = function () {
 
 createSlider();
 
-// функции для закрытия оверлея
 const closeOverlay = function () {
   overlay.classList.add('hidden'),
   body.classList.remove('modal-open');
@@ -69,14 +68,14 @@ const onEscButtonOverlay = function (evt) {
     evt.preventDefault();
     overlay.classList.add('hidden'),
     body.classList.remove('modal-open');
+    setToDefault();
   }
 };
-
-// функции для закрытия оверлея просмjтра фотографий
 
 const closeOverlayPicture = function () {
   fullImageOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
+  setToDefault();
 };
 
 const closeOnEscOverlayPicture = function (evt) {
@@ -84,9 +83,10 @@ const closeOnEscOverlayPicture = function (evt) {
     evt.preventDefault();
     fullImageOverlay.classList.add('hidden');
     body.classList.remove('modal-open');
+    setToDefault();
   }
 };
-// Функция для обработчиков для закрытия окна
+
 const setToDefault = function () {
   noEffectButton.checked = true;
 
@@ -95,13 +95,14 @@ const setToDefault = function () {
   }
 
   imageScale.value = '100%';
+  innerImage.style.transform = 'scale(1)';
   innerImage.style.filter = 'none';
   innerImage.src = '';
+  lessSizeButton.disabled = false;
+  moreSizeButton.disabled = true;
   hashtagInput.value = '';
   commentTextArea.value = '';
 };
-
-// функция для создания окна с сообщением
 
 const showAlert = function (id, selector) {
   closeOverlay();
@@ -118,12 +119,12 @@ const showAlert = function (id, selector) {
   const elementMessage = document.querySelector(selector);
   const inner = document.querySelector(selector + '__inner');
   const closeMessage = document.querySelector(selector + '__button');
-  // закрытие окна при клике на кнопку
+
   closeMessage.addEventListener('click', function () {
     setToDefault();
     elementMessage.remove();
   });
-  // закрытие окна при нажатие ESC
+
   window.addEventListener('keydown', function (evt) {
     if (isEscButton(evt)) {
       evt.preventDefault();
@@ -131,7 +132,7 @@ const showAlert = function (id, selector) {
       elementMessage.remove();
     }
   });
-  // закрытие окна при клике вне сообщения об жтправке
+
   const handler = function (evt) {
     if (!inner.contains(evt.target)) {
       setToDefault();
@@ -142,7 +143,6 @@ const showAlert = function (id, selector) {
   elementMessage.addEventListener('click', handler);
 };
 
-// функция для сообщения об ошибке получения данных с сервера
 const failToGetAlert = function (message) {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
