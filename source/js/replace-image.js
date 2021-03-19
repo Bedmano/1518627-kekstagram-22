@@ -11,7 +11,6 @@ const FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif'];
 document.addEventListener('dragover', (evt) => evt.preventDefault());
 document.addEventListener('drop', (evt) => evt.preventDefault());
 
-
 const replaceImage = function() {
   let file = upload.files[0];
   const fileName = file.name.toLowerCase();
