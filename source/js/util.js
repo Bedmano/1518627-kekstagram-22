@@ -56,14 +56,14 @@ const createSlider = function () {
   });
 };
 
-createSlider();
+
 
 const closeOverlay = function () {
   overlay.classList.add('hidden'),
   body.classList.remove('modal-open');
 };
 
-const onEscButtonOverlay = function (evt) {
+const closeOnEscButtonOverlay = function (evt) {
   if (isEscButton(evt)) {
     evt.preventDefault();
     overlay.classList.add('hidden'),
@@ -174,7 +174,7 @@ export {
   getRandom,
   isEscButton,
   createSlider,
-  onEscButtonOverlay,
+  closeOnEscButtonOverlay,
   closeOverlay,
   closeOverlayPicture,
   closeOnEscOverlayPicture,

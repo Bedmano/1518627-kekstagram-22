@@ -9,8 +9,7 @@ const marvinEffectButton = document.querySelector('#effect-marvin');
 const phobosEffectButton = document.querySelector('#effect-phobos');
 const heatEffectButton = document.querySelector('#effect-heat');
 
-// данные для фильтров
-const FILTER_SETTINGS = {
+const settings = {
   chrome: 'grayscale',
   sepia: 'sepia',
   marvin: 'invert',
@@ -24,7 +23,6 @@ const FILTER_SETTINGS = {
 let innerImage = imageContainer.querySelector('img');
 valueElement.value = 0;
 
-// функция для обновления информации в слайдере и наложения фильтра на изображения с помощью параметров
 const updateFilter = function (filterName, unit) {
   sliderElement.noUiSlider.on('update', (_, handle, unencoded) => {
 
@@ -33,20 +31,20 @@ const updateFilter = function (filterName, unit) {
       '' + filterName + '(' + valueElement.value + unit + ')';
   });
 };
-// при выборе оригинала сбрасывает все фильтры и удаляет слайдер
+
 noEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     innerImage.style.filter = 'none';
     sliderElement.noUiSlider.destroy();
   }
 });
-// накладывает фильтр серого
+
 chromeEffectButton.addEventListener('change', function (evt) {
-  // делает проверку, создан ли слайдер,если его нет - создаёт его
+
   if(!sliderElement.classList.contains('noUi-target')){
     createSlider();
   }
-  // заменяет настройки слайдера на необходимые конкретному фильтру
+
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: 0,
@@ -55,15 +53,14 @@ chromeEffectButton.addEventListener('change', function (evt) {
     start: 0,
     step: 0.1,
   });
-  // проверяет атрибут checked, сбрасывает стили и ползунок к базовому значению, вызывает функцию с нужными параметрами фильтра
+
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(0);
     innerImage.style.filter = 'none';
-    updateFilter(FILTER_SETTINGS.chrome, FILTER_SETTINGS.empty);
+    updateFilter(settings.chrome, settings.empty);
   }
 });
 
-// накладывает фильтр сепии
 sepiaEffectButton.addEventListener('change', function (evt) {
   if(!sliderElement.classList.contains('noUi-target')){
     createSlider();
@@ -79,11 +76,10 @@ sepiaEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(0);
     innerImage.style.filter = 'none';
-    updateFilter(FILTER_SETTINGS.sepia, FILTER_SETTINGS.empty);
+    updateFilter(settings.sepia, settings.empty);
   }
 });
 
-// накладывает фильтр инвертирования цветов
 marvinEffectButton.addEventListener('change', function (evt) {
   if(!sliderElement.classList.contains('noUi-target')){
     createSlider();
@@ -99,11 +95,10 @@ marvinEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(0);
     innerImage.style.filter = 'none';
-    updateFilter(FILTER_SETTINGS.marvin, FILTER_SETTINGS.percent);
+    updateFilter(settings.marvin, settings.percent);
   }
 });
 
-// накладывает фильтр размытия
 phobosEffectButton.addEventListener('change', function (evt) {
   if(!sliderElement.classList.contains('noUi-target')){
     createSlider();
@@ -119,11 +114,10 @@ phobosEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(0);
     innerImage.style.filter = 'none';
-    updateFilter(FILTER_SETTINGS.phobos, FILTER_SETTINGS.pixel);
+    updateFilter(settings.phobos, settings.pixel);
   }
 });
 
-// накладывает фильтр яркости
 heatEffectButton.addEventListener('change', function (evt) {
   if(!sliderElement.classList.contains('noUi-target')){
     createSlider();
@@ -139,7 +133,7 @@ heatEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(1);
     innerImage.style.filter = 'none';
-    updateFilter(FILTER_SETTINGS.heat, FILTER_SETTINGS.empty);
+    updateFilter(settings.heat, settings.empty);
   }
 });
 

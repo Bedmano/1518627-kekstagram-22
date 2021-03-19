@@ -1,4 +1,4 @@
-import { onEscButtonOverlay } from './util.js';
+import { closeOnEscButtonOverlay } from './util.js';
 
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentTextArea = document.querySelector('.text__description');
@@ -10,14 +10,14 @@ const isValidHastag = (input) => {
 }
 
 const checkOriginality = function (hashtags) {
-  const originalHashtag = [];
+  const originalHashtags = [];
   let originality = true;
   hashtags.forEach((hashtag) => {
     const hashtagLowerCase = hashtag.toLowerCase();
-    if (originalHashtag.includes(hashtagLowerCase)) {
+    if (originalHashtags.includes(hashtagLowerCase)) {
       originality = false;
     } else {
-      originalHashtag.push(hashtagLowerCase);
+      originalHashtags.push(hashtagLowerCase);
     }
   });
   return originality;
@@ -38,29 +38,29 @@ const validateHashtag = function (input) {
 
 const checkHashtagInput = function (input) {
   let error = '';
-  const erorrsArray = [];
+  const errors = [];
   const hashtags = input.split(' ');
   if (hashtags.length > MAX_HASHTAG_NUMBER) {
-    erorrsArray.push('Количество хэштегов не должно привышать 5');
+    errors.push('Количество хэштегов не должно привышать 5');
   }
   if (!checkOriginality(hashtags)) {
-    erorrsArray.push('Хэштег не может повторяться');
+    errors.push('Хэштег не может повторяться');
   }
   hashtags.forEach((hashtag) => {
     error = validateHashtag(hashtag);
     if (error) {
-      erorrsArray.push(error);
+      errors.push(error);
     }
   });
-  error = erorrsArray.join(', ');
+  error = errors.join(', ');
   return error;
 };
 
 hashtagInput.onfocus = function () {
-  window.removeEventListener('keydown', onEscButtonOverlay);
+  window.removeEventListener('keydown', closeOnEscButtonOverlay);
 };
 hashtagInput.onblur = function () {
-  window.addEventListener('keydown', onEscButtonOverlay);
+  window.addEventListener('keydown', closeOnEscButtonOverlay);
 };
 
 hashtagInput.addEventListener('input', function () {
@@ -68,8 +68,8 @@ hashtagInput.addEventListener('input', function () {
 });
 
 commentTextArea.onfocus = function () {
-  window.removeEventListener('keydown', onEscButtonOverlay);
+  window.removeEventListener('keydown', closeOnEscButtonOverlay);
 };
 commentTextArea.onblur = function () {
-  window.addEventListener('keydown', onEscButtonOverlay);
+  window.addEventListener('keydown', closeOnEscButtonOverlay);
 };

@@ -1,4 +1,4 @@
-import { onEscButtonOverlay, closeOverlay } from './util.js';
+import { closeOnEscButtonOverlay, closeOverlay } from './util.js';
 const upload = document.querySelector('#upload-file');
 const body = document.querySelector('body');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -12,7 +12,7 @@ document.addEventListener('dragover', (evt) => evt.preventDefault());
 document.addEventListener('drop', (evt) => evt.preventDefault());
 
 
-function replaceImage() {
+const replaceImage = function() {
   let file = upload.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => {
@@ -41,6 +41,6 @@ upload.addEventListener('change', function (evt) {
 
 closeModal.addEventListener('click', closeOverlay);
 
-window.addEventListener('keydown', onEscButtonOverlay);
+window.addEventListener('keydown', closeOnEscButtonOverlay);
 
 export { imageContainer, innerImage };

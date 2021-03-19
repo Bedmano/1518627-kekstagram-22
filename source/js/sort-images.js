@@ -18,11 +18,11 @@ const getRandomArray = (pictures, randomArrayLength) => {
   if (pictures.length <= randomArrayLength) {
     return pictures;
   }
-  const originalPictures = new Set();
-  while (originalPictures.size < randomArrayLength) {
-    originalPictures.add(getRandomArrayElement(pictures));
+  const OriginalPictures = new Set();
+  while (OriginalPictures.size < randomArrayLength) {
+    OriginalPictures.add(getRandomArrayElement(pictures));
   }
-  return Array.from(originalPictures);
+  return Array.from(OriginalPictures);
 };
 
 const sortRandom = function (pictures) {

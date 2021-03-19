@@ -3,9 +3,6 @@ const pictures = document.querySelector('.pictures');
 const pictureFragment = document.querySelector('#picture').content;
 const picture = pictureFragment.querySelector('.picture');
 
-const commentsArray = [];
-const descriptionArray = [];
-
 const removePictures = function(){
   document.querySelectorAll('.picture').forEach((item) => item.remove())
 }
@@ -25,4 +22,4 @@ const renderPictures = function (picturesArray) {
   pictures.appendChild(fragment);
   showFullImage(picturesArray);
 };
-export { renderPictures, removePictures, commentsArray, descriptionArray };
+export { renderPictures, removePictures };
