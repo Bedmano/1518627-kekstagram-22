@@ -2,6 +2,7 @@ import { innerImage } from './replace-image.js';
 const lessSizeButton = document.querySelector('.scale__control--smaller');
 const moreSizeButton = document.querySelector('.scale__control--bigger');
 const currentSize = document.querySelector('.scale__control--value');
+
 const settings = {
   step: 25,
   min: 25,
