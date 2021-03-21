@@ -19,10 +19,9 @@ const replaceImage = function() {
   });
   if (matches) {
     const reader = new FileReader();
-    reader.onloadend = function () {
+    reader.addEventListener('load',function () {
       innerImage.src = reader.result;
-    };
-
+    });
     if (file) {
       reader.readAsDataURL(file);
     } else {
@@ -36,6 +35,7 @@ upload.addEventListener('change', function (evt) {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   replaceImage();
+  upload.value = '';
 });
 
 closeModal.addEventListener('click', closeOverlay);

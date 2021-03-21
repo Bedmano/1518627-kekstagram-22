@@ -56,11 +56,10 @@ const createSlider = function () {
   });
 };
 
-
-
 const closeOverlay = function () {
   overlay.classList.add('hidden'),
   body.classList.remove('modal-open');
+  setToDefault();
 };
 
 const closeOnEscButtonOverlay = function (evt) {
@@ -75,7 +74,6 @@ const closeOnEscButtonOverlay = function (evt) {
 const closeOverlayPicture = function () {
   fullImageOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  setToDefault();
 };
 
 const closeOnEscOverlayPicture = function (evt) {
@@ -83,7 +81,6 @@ const closeOnEscOverlayPicture = function (evt) {
     evt.preventDefault();
     fullImageOverlay.classList.add('hidden');
     body.classList.remove('modal-open');
-    setToDefault();
   }
 };
 

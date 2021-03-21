@@ -35,6 +35,7 @@ const updateFilter = function (filterName, unit) {
 noEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     innerImage.style.filter = 'none';
+    valueElement.setAttribute('step', '0.1');
     sliderElement.noUiSlider.destroy();
   }
 });
@@ -57,6 +58,7 @@ chromeEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(0);
     innerImage.style.filter = 'none';
+    valueElement.setAttribute('step', '0.1');
     updateFilter(settings.chrome, settings.empty);
   }
 });
@@ -76,6 +78,7 @@ sepiaEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(0);
     innerImage.style.filter = 'none';
+    valueElement.setAttribute('step', '0.1');
     updateFilter(settings.sepia, settings.empty);
   }
 });
@@ -95,6 +98,7 @@ marvinEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(0);
     innerImage.style.filter = 'none';
+    valueElement.setAttribute('step', '1');
     updateFilter(settings.marvin, settings.percent);
   }
 });
@@ -114,6 +118,7 @@ phobosEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(0);
     innerImage.style.filter = 'none';
+    valueElement.setAttribute('step', '0.1');
     updateFilter(settings.phobos, settings.pixel);
   }
 });
@@ -133,6 +138,7 @@ heatEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     sliderElement.noUiSlider.set(1);
     innerImage.style.filter = 'none';
+    valueElement.setAttribute('step', '0.1');
     updateFilter(settings.heat, settings.empty);
   }
 });

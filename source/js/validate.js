@@ -10,14 +10,14 @@ const isValidHastag = (input) => {
 }
 
 const checkOriginality = function (hashtags) {
-  const originalHashtags = [];
+  const originalHashtag = [];
   let originality = true;
   hashtags.forEach((hashtag) => {
     const hashtagLowerCase = hashtag.toLowerCase();
-    if (originalHashtags.includes(hashtagLowerCase)) {
+    if (originalHashtag.includes(hashtagLowerCase)) {
       originality = false;
     } else {
-      originalHashtags.push(hashtagLowerCase);
+      originalHashtag.push(hashtagLowerCase);
     }
   });
   return originality;
@@ -38,21 +38,21 @@ const validateHashtag = function (input) {
 
 const checkHashtagInput = function (input) {
   let error = '';
-  const errors = [];
+  const erorrsArray = [];
   const hashtags = input.split(' ');
   if (hashtags.length > MAX_HASHTAG_NUMBER) {
-    errors.push('Количество хэштегов не должно привышать 5');
+    erorrsArray.push('Количество хэштегов не должно привышать 5');
   }
   if (!checkOriginality(hashtags)) {
-    errors.push('Хэштег не может повторяться');
+    erorrsArray.push('Хэштег не может повторяться');
   }
   hashtags.forEach((hashtag) => {
     error = validateHashtag(hashtag);
     if (error) {
-      errors.push(error);
+      erorrsArray.push(error);
     }
   });
-  error = errors.join(', ');
+  error = erorrsArray.join(', ');
   return error;
 };
 
@@ -63,8 +63,12 @@ hashtagInput.onblur = function () {
   window.addEventListener('keydown', closeOnEscButtonOverlay);
 };
 
-hashtagInput.addEventListener('input', function () {
-  hashtagInput.setCustomValidity(checkHashtagInput(hashtagInput.value));
+hashtagInput.addEventListener('change', function () {
+  if(hashtagInput.value.slice(-1) === ' ') {
+    hashtagInput.value = hashtagInput.value.trim();
+  } else{
+    hashtagInput.setCustomValidity(checkHashtagInput(hashtagInput.value))
+  }
 });
 
 commentTextArea.onfocus = function () {
