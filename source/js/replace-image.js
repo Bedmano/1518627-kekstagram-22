@@ -1,4 +1,4 @@
-import { closeOnEscButtonOverlay, closeOverlay } from './util.js';
+import { onEscButtonCloseOverlay, onClickCloseOverlay } from './util.js';
 const upload = document.querySelector('#upload-file');
 const body = document.querySelector('body');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -35,11 +35,12 @@ upload.addEventListener('change', function (evt) {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   replaceImage();
-  upload.value = '';
+
 });
 
-closeModal.addEventListener('click', closeOverlay);
+closeModal.addEventListener('click', onClickCloseOverlay);
 
-window.addEventListener('keydown', closeOnEscButtonOverlay);
+window.addEventListener('keydown', onEscButtonCloseOverlay);
+
 
 export { imageContainer, innerImage };

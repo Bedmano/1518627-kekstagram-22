@@ -1,6 +1,7 @@
-import { closeOnEscOverlayPicture, closeOverlayPicture } from './util.js';
+import { onEscButtonCloseOverlayPicture, onClickCloseOverlayPicture } from './util.js';
 import { replaceComments } from './replace-comments.js';
-
+const COMMENTS_START_VALUE = 5;
+const COMMENTS_STEP = 5;
 const fullImageOverlay = document.querySelector('.big-picture');
 const fullImage = document.querySelector('.big-picture__img').querySelector('img');
 const closeModal = document.querySelector('.big-picture__cancel');
@@ -11,8 +12,6 @@ const imageDescription = document.querySelector('.social__caption');
 const socialCounter = document.querySelector('.social__comment-count');
 const body = document.querySelector('body');
 const loadButton = document.querySelector('.comments-loader');
-const COMMENTS_START_VALUE = 5;
-const COMMENTS_STEP = 5;
 
 const showFullImage = function (picturesArray) {
   const pictures = document.querySelectorAll('.picture');
@@ -30,7 +29,7 @@ const showFullImage = function (picturesArray) {
       commentsCount.textContent = comments.length;
       imageDescription.textContent = description;
 
-      const loadComments = function () {
+      const onClickLoadComments = function () {
         currentComments += COMMENTS_STEP;
         socialCounter.textContent =
           currentComments + ' из ' + comments.length + ' комментариев';
@@ -45,7 +44,7 @@ const showFullImage = function (picturesArray) {
 
         if (comments.length <= currentComments) {
           loadButton.classList.add('hidden');
-          loadButton.removeEventListener('click', loadComments);
+          loadButton.removeEventListener('click', onClickLoadComments);
           socialCounter.textContent =
             comments.length + ' из ' + comments.length + ' комментариев';
         }
@@ -56,14 +55,15 @@ const showFullImage = function (picturesArray) {
       showComments();
 
       if (comments.length > COMMENTS_START_VALUE) {
-        loadButton.addEventListener('click', loadComments);
+        loadButton.addEventListener('click', onClickLoadComments);
       }
     });
   });
+
 };
 
-closeModal.addEventListener('click', closeOverlayPicture);
+closeModal.addEventListener('click', onClickCloseOverlayPicture);
 
-window.addEventListener('keydown', closeOnEscOverlayPicture);
+window.addEventListener('keydown', onEscButtonCloseOverlayPicture);
 
 export { showFullImage };

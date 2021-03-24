@@ -1,6 +1,7 @@
 import { createSlider } from './util.js';
 import { imageContainer } from './replace-image.js'
 const sliderElement = document.querySelector('.effect-level__slider');
+const sliderBar = document.querySelector('.effect-level');
 const valueElement = document.querySelector('.effect-level__value');
 const noEffectButton = document.querySelector('#effect-none');
 const chromeEffectButton = document.querySelector('#effect-chrome');
@@ -22,6 +23,7 @@ const settings = {
 
 let innerImage = imageContainer.querySelector('img');
 valueElement.value = 0;
+sliderBar.style.display = 'none';
 
 const updateFilter = function (filterName, unit) {
   sliderElement.noUiSlider.on('update', (_, handle, unencoded) => {
@@ -35,7 +37,8 @@ const updateFilter = function (filterName, unit) {
 noEffectButton.addEventListener('change', function (evt) {
   if (evt.target.checked) {
     innerImage.style.filter = 'none';
-    valueElement.setAttribute('step', '0.1');
+    sliderBar.style.display = 'none';
+    valueElement.step = '0.1';
     sliderElement.noUiSlider.destroy();
   }
 });
@@ -56,9 +59,10 @@ chromeEffectButton.addEventListener('change', function (evt) {
   });
 
   if (evt.target.checked) {
-    sliderElement.noUiSlider.set(0);
+    sliderElement.noUiSlider.set(1);
+    sliderBar.style.display = 'block';
     innerImage.style.filter = 'none';
-    valueElement.setAttribute('step', '0.1');
+    valueElement.step = '0.1';
     updateFilter(settings.chrome, settings.empty);
   }
 });
@@ -76,9 +80,10 @@ sepiaEffectButton.addEventListener('change', function (evt) {
     step: 0.1,
   });
   if (evt.target.checked) {
-    sliderElement.noUiSlider.set(0);
+    sliderElement.noUiSlider.set(1);
+    sliderBar.style.display = 'block';
     innerImage.style.filter = 'none';
-    valueElement.setAttribute('step', '0.1');
+    valueElement.step = '0.1';
     updateFilter(settings.sepia, settings.empty);
   }
 });
@@ -96,9 +101,10 @@ marvinEffectButton.addEventListener('change', function (evt) {
     step: 1,
   });
   if (evt.target.checked) {
-    sliderElement.noUiSlider.set(0);
+    sliderElement.noUiSlider.set(100);
+    sliderBar.style.display = 'block';
     innerImage.style.filter = 'none';
-    valueElement.setAttribute('step', '1');
+    valueElement.step = '1';
     updateFilter(settings.marvin, settings.percent);
   }
 });
@@ -116,9 +122,10 @@ phobosEffectButton.addEventListener('change', function (evt) {
     step: 0.1,
   });
   if (evt.target.checked) {
-    sliderElement.noUiSlider.set(0);
+    sliderElement.noUiSlider.set(3);
+    sliderBar.style.display = 'block';
     innerImage.style.filter = 'none';
-    valueElement.setAttribute('step', '0.1');
+    valueElement.step = '0.1';
     updateFilter(settings.phobos, settings.pixel);
   }
 });
@@ -136,9 +143,10 @@ heatEffectButton.addEventListener('change', function (evt) {
     step: 0.1,
   });
   if (evt.target.checked) {
-    sliderElement.noUiSlider.set(1);
+    sliderElement.noUiSlider.set(3);
+    sliderBar.style.display = 'block';
     innerImage.style.filter = 'none';
-    valueElement.setAttribute('step', '0.1');
+    valueElement.step = '0.1';
     updateFilter(settings.heat, settings.empty);
   }
 });

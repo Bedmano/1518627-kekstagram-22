@@ -3,7 +3,6 @@ import { getRandom } from './util.js';
 import { renderPictures } from './render-pictures.js';
 const RANDOM_PICTURES_NUMBER = 10;
 const SET_DELAY = 500;
-
 const sort = document.querySelector('.img-filters');
 const sortForm = document.querySelector('.img-filters__form');
 const defaultSetting = document.querySelector('#filter-default');

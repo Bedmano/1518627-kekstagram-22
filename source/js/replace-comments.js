@@ -1,6 +1,5 @@
-const commentsList = document.querySelector('.social__comments');
-
 import { createNewElement } from './util.js';
+const commentsList = document.querySelector('.social__comments');
 
 const replaceComments = function (currentComments, comments) {
   const fragment = document.createDocumentFragment();

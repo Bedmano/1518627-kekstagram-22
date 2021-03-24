@@ -1,7 +1,9 @@
 /* global noUiSlider:readonly */
+const ALERT_TIMER = 5000;
 const body = document.querySelector('body');
 const main = document.querySelector('main');
 const sliderElement = document.querySelector('.effect-level__slider');
+const sliderBar = document.querySelector('.effect-level');
 const noEffectButton = document.querySelector('#effect-none');
 const fullImageOverlay = document.querySelector('.big-picture');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -12,8 +14,7 @@ const imageContainer = document.querySelector('.img-upload__preview');
 const innerImage = imageContainer.querySelector('img');
 const lessSizeButton = document.querySelector('.scale__control--smaller');
 const moreSizeButton = document.querySelector('.scale__control--bigger');
-
-const ALERT_TIMER = 5000;
+const upload = document.querySelector('#upload-file');
 
 const args = {
   successId: '#success',
@@ -38,11 +39,11 @@ const isEscButton = function (evt) {
   return evt.key === ('Escape' || 'Esc');
 };
 
-const createNewElement = function(tag, elementClass){
+const createNewElement = function (tag, elementClass) {
   const newElement = document.createElement(tag);
   newElement.classList.add(elementClass);
-  return newElement
-}
+  return newElement;
+};
 
 const createSlider = function () {
   noUiSlider.create(sliderElement, {
@@ -56,29 +57,29 @@ const createSlider = function () {
   });
 };
 
-const closeOverlay = function () {
-  overlay.classList.add('hidden'),
-  body.classList.remove('modal-open');
+const onClickCloseOverlay = function () {
+  overlay.classList.add('hidden'), body.classList.remove('modal-open');
   setToDefault();
 };
 
-const closeOnEscButtonOverlay = function (evt) {
+const onEscButtonCloseOverlay = function (evt) {
   if (isEscButton(evt)) {
     evt.preventDefault();
-    overlay.classList.add('hidden'),
-    body.classList.remove('modal-open');
+    window.removeEventListener('click', onEscButtonCloseOverlay);
+    overlay.classList.add('hidden'), body.classList.remove('modal-open');
     setToDefault();
   }
 };
 
-const closeOverlayPicture = function () {
+const onClickCloseOverlayPicture = function () {
   fullImageOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
 };
 
-const closeOnEscOverlayPicture = function (evt) {
+const onEscButtonCloseOverlayPicture = function (evt) {
   if (isEscButton(evt)) {
     evt.preventDefault();
+    window.removeEventListener('click', onEscButtonCloseOverlayPicture);
     fullImageOverlay.classList.add('hidden');
     body.classList.remove('modal-open');
   }
@@ -95,14 +96,17 @@ const setToDefault = function () {
   innerImage.style.transform = 'scale(1)';
   innerImage.style.filter = 'none';
   innerImage.src = '';
+  sliderBar.style.display = 'none';
   lessSizeButton.disabled = false;
   moreSizeButton.disabled = true;
   hashtagInput.value = '';
   commentTextArea.value = '';
+  upload.value = '';
 };
 
 const showAlert = function (id, selector) {
-  closeOverlay();
+  overlay.classList.add('hidden'), body.classList.remove('modal-open');
+  setToDefault();
 
   const fragment = document.createDocumentFragment();
   const template = document.querySelector(id).content;
@@ -117,27 +121,28 @@ const showAlert = function (id, selector) {
   const inner = document.querySelector(selector + '__inner');
   const closeMessage = document.querySelector(selector + '__button');
 
-  closeMessage.addEventListener('click', function () {
+  const closeAlert = () => {
     setToDefault();
     elementMessage.remove();
-  });
+    window.removeEventListener('keydown', onEscCloseAlert);
+  };
 
-  window.addEventListener('keydown', function (evt) {
+  const onEscCloseAlert = (evt) => {
     if (isEscButton(evt)) {
       evt.preventDefault();
-      setToDefault();
-      elementMessage.remove();
-    }
-  });
-
-  const handler = function (evt) {
-    if (!inner.contains(evt.target)) {
-      setToDefault();
-      elementMessage.remove();
+      closeAlert();
     }
   };
 
-  elementMessage.addEventListener('click', handler);
+  const checkInner = function (evt) {
+    if (!inner.contains(evt.target)) {
+      closeAlert();
+    }
+  };
+
+  closeMessage.addEventListener('click', closeAlert);
+  window.addEventListener('keydown', onEscCloseAlert);
+  elementMessage.addEventListener('click', checkInner);
 };
 
 const failToGetAlert = function (message) {
@@ -171,10 +176,10 @@ export {
   getRandom,
   isEscButton,
   createSlider,
-  closeOnEscButtonOverlay,
-  closeOverlay,
-  closeOverlayPicture,
-  closeOnEscOverlayPicture,
+  onEscButtonCloseOverlay,
+  onClickCloseOverlay,
+  onClickCloseOverlayPicture,
+  onEscButtonCloseOverlayPicture,
   showAlert,
   createNewElement,
   args,

@@ -1,23 +1,22 @@
-import { closeOnEscButtonOverlay } from './util.js';
-
-const hashtagInput = document.querySelector('.text__hashtags');
-const commentTextArea = document.querySelector('.text__description');
+import { onEscButtonCloseOverlay } from './util.js';
 const HASHTAG_LENGTH = 20;
 const MAX_HASHTAG_NUMBER = 5;
+const hashtagInput = document.querySelector('.text__hashtags');
+const commentTextArea = document.querySelector('.text__description');
 
 const isValidHastag = (input) => {
   return /^\w+$/.test(input) && !(~input.indexOf('_'));
 }
 
 const checkOriginality = function (hashtags) {
-  const originalHashtag = [];
+  const originalHashtags = [];
   let originality = true;
   hashtags.forEach((hashtag) => {
     const hashtagLowerCase = hashtag.toLowerCase();
-    if (originalHashtag.includes(hashtagLowerCase)) {
+    if (originalHashtags.includes(hashtagLowerCase)) {
       originality = false;
     } else {
-      originalHashtag.push(hashtagLowerCase);
+      originalHashtags.push(hashtagLowerCase);
     }
   });
   return originality;
@@ -57,10 +56,10 @@ const checkHashtagInput = function (input) {
 };
 
 hashtagInput.onfocus = function () {
-  window.removeEventListener('keydown', closeOnEscButtonOverlay);
+  window.removeEventListener('keydown', onEscButtonCloseOverlay);
 };
 hashtagInput.onblur = function () {
-  window.addEventListener('keydown', closeOnEscButtonOverlay);
+  window.addEventListener('keydown', onEscButtonCloseOverlay);
 };
 
 hashtagInput.addEventListener('change', function () {
@@ -72,8 +71,8 @@ hashtagInput.addEventListener('change', function () {
 });
 
 commentTextArea.onfocus = function () {
-  window.removeEventListener('keydown', closeOnEscButtonOverlay);
+  window.removeEventListener('keydown', onEscButtonCloseOverlay);
 };
 commentTextArea.onblur = function () {
-  window.addEventListener('keydown', closeOnEscButtonOverlay);
+  window.addEventListener('keydown', onEscButtonCloseOverlay);
 };
