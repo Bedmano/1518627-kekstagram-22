@@ -100,6 +100,7 @@ const setToDefault = function () {
   lessSizeButton.disabled = false;
   moreSizeButton.disabled = true;
   hashtagInput.value = '';
+  hashtagInput.style.outline = '';
   commentTextArea.value = '';
   upload.value = '';
 };

@@ -1,59 +1,58 @@
 import { onEscButtonCloseOverlay } from './util.js';
-const HASHTAG_LENGTH = 20;
+const MIN_HASHTAG_LENGTH = 2;
+const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAG_NUMBER = 5;
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentTextArea = document.querySelector('.text__description');
+const allowedSymbols = /^[0-9A-Za-zА-Яа-я]+$/;
+const errorOutline = 'red auto 1px'
 
-const isValidHastag = (input) => {
-  return /^\w+$/.test(input) && !(~input.indexOf('_'));
+
+const onHashtagInput = () => {
+  const hashtags = hashtagInput.value.trim().toLowerCase().split(' ').filter(tag=>tag);
+  if(hashtagInput.value === ''){
+    hashtagInput.style.outline = '';
+    hashtagInput.setCustomValidity('');
+  }
+
+  hashtags.some((hashtag) => {
+    if (hashtag[0] !== '#') {
+      hashtagInput.setCustomValidity('хэш-тег должен начинаться с символа # (решётка)');
+      hashtagInput.style.outline = errorOutline;
+      return true;
+    } else if (hashtags.length > MAX_HASHTAG_NUMBER) {
+      hashtagInput.setCustomValidity(`Допустимо использовать не более ${MAX_HASHTAG_NUMBER} хештегов`);
+      hashtagInput.style.outline = errorOutline;
+      return true;
+    } else if (hashtag.length < MIN_HASHTAG_LENGTH) {
+      hashtagInput.setCustomValidity('хеш-тег не может состоять только из одной решётки');
+      hashtagInput.style.outline = errorOutline;
+      return true;
+    } else if (!allowedSymbols.test(hashtag.slice(1))) {
+      hashtagInput.style.outline = errorOutline;
+      hashtagInput.setCustomValidity('строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.');
+      return true;
+    } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
+      hashtagInput.setCustomValidity(`максимальная длина одного хэш-тега ${MAX_HASHTAG_LENGTH} символов, включая решётку`);
+      hashtagInput.style.outline = errorOutline;
+      return true;
+    } else if (hashtag.indexOf('#', 1) >= 1) {
+      hashtagInput.setCustomValidity('хэш-теги разделяются пробелами');
+      hashtagInput.style.outline = errorOutline;
+      return true;
+    } else if (hashtags.length !== new Set(hashtags).size) {
+      hashtagInput.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
+      hashtagInput.style.outline = errorOutline;
+      return true;
+    } else {
+      hashtagInput.setCustomValidity('');
+      hashtagInput.style.outline = '';
+    }
+  });
+  hashtagInput.reportValidity();
 }
 
-const checkOriginality = function (hashtags) {
-  const originalHashtags = [];
-  let originality = true;
-  hashtags.forEach((hashtag) => {
-    const hashtagLowerCase = hashtag.toLowerCase();
-    if (originalHashtags.includes(hashtagLowerCase)) {
-      originality = false;
-    } else {
-      originalHashtags.push(hashtagLowerCase);
-    }
-  });
-  return originality;
-};
-
-const validateHashtag = function (input) {
-  let error = '';
-  if (input.slice(0, 1) !== '#') {
-    error = 'Хэштег должен начинаться с решётки';
-  } else if (!isValidHastag(input.slice(1))) {
-    error = 'Хэштэг не должен содержать спецсимволы';
-  } else if (input.length > HASHTAG_LENGTH) {
-    error =
-      'Хэштег не должен быть длиннее 20 символов (включая символ решётки)';
-  }
-  return error;
-};
-
-const checkHashtagInput = function (input) {
-  let error = '';
-  const erorrsArray = [];
-  const hashtags = input.split(' ');
-  if (hashtags.length > MAX_HASHTAG_NUMBER) {
-    erorrsArray.push('Количество хэштегов не должно привышать 5');
-  }
-  if (!checkOriginality(hashtags)) {
-    erorrsArray.push('Хэштег не может повторяться');
-  }
-  hashtags.forEach((hashtag) => {
-    error = validateHashtag(hashtag);
-    if (error) {
-      erorrsArray.push(error);
-    }
-  });
-  error = erorrsArray.join(', ');
-  return error;
-};
+hashtagInput.addEventListener('input', onHashtagInput);
 
 hashtagInput.onfocus = function () {
   window.removeEventListener('keydown', onEscButtonCloseOverlay);
@@ -61,14 +60,6 @@ hashtagInput.onfocus = function () {
 hashtagInput.onblur = function () {
   window.addEventListener('keydown', onEscButtonCloseOverlay);
 };
-
-hashtagInput.addEventListener('change', function () {
-  if(hashtagInput.value.slice(-1) === ' ') {
-    hashtagInput.value = hashtagInput.value.trim();
-  } else{
-    hashtagInput.setCustomValidity(checkHashtagInput(hashtagInput.value))
-  }
-});
 
 commentTextArea.onfocus = function () {
   window.removeEventListener('keydown', onEscButtonCloseOverlay);
